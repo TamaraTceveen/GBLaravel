@@ -22,7 +22,7 @@ Route::get('/hello/{UserName}', function (string $UserName) {
 });
 
 Route::get('/about', function () {
-    return "Страница о проекте";
+    return "Страница с информацией о проекте";
 });
 
 Route::get('/news', function () {
