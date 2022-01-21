@@ -23,13 +23,12 @@ Route::get('/', function () {
 // news
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+    Route::view('/', 'admin.index')->name('index');
     Route::resource('/categories', AdminCategoryController::class);
     Route::resource('/news', AdminNewsController::class);
 });
 
-Route::get('/about', function () {
-    return "Страница с информацией о проекте";
-});
+Route::view('/about', 'news.about')->name('about');
 
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
