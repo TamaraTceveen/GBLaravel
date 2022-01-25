@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsFormController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,18 +21,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{UserName}', function (string $UserName) {
-    return "Hello, " . $UserName;
+// news
+
+Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
+    Route::view('/', 'admin.index')->name('index');
+    Route::resource('/categories', AdminCategoryController::class);
+    Route::resource('/news', AdminNewsController::class);
 });
 
-Route::get('/about', function () {
-    return "Страница о проекте";
-});
+Route::view('/about', 'news.about')->name('about');
 
-Route::get('/news', function () {
-    return "Список всех новостей";
-});
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news.index');
 
-Route::get('/news/{id}', function (int $id) {
-    return "Вывод новости №" . $id;
-});
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
+
+Route::resource('/newsComment', NewsFormController::class);
+
+
+Route::get('/news/categories', [NewsController::class, 'showAllCategories'])
+    ->name('categories');
+
+
+
+Route::get('/news/categories/{id}', [NewsController::class, 'showCategories'])
+    ->where('id', '\d+')
+    ->name('categories.show');
+
+
