@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.article')
 
 @section('title')
     {{ $newsList['title'] }} @parent
@@ -20,3 +20,5 @@
 
 </div>
 @endsection
+
+

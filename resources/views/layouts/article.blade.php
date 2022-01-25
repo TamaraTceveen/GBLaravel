@@ -8,7 +8,7 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
-       <style>
+    <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -41,8 +41,8 @@
     </div>
 
 </main>
+<x-formComment></x-formComment>
 
-<x-formApplication></x-formApplication>
 <x-footer></x-footer>
 
 

@@ -1,20 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class NewsFormController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+//    public function index(int $id)
+//    {
+//        $categories = $this->newsCategories($id);
+//
+//        return view('news/showNewsByCategory', [
+//            'categoriesList' => $categories
+//        ]);
+//
+//    }
+
     public function index()
     {
-        return view('admin.news.index');
+//        return 'test';
+
     }
 
     /**
@@ -24,7 +34,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        //
     }
 
     /**
@@ -36,7 +46,7 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:5']
+            'author' => ['required', 'string', 'min:5']
         ]);
 
         file_put_contents(public_path('/news/data.json'), json_encode($request->all()), FILE_APPEND);
