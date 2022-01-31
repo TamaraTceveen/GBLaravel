@@ -31,7 +31,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
 Route::view('/about', 'news.about')->name('about');
 
-Route::get('/news', [NewsController::class, 'index'])
+Route::get('/newslist', [NewsController::class, 'index'])
     ->name('news.index');
 
 Route::get('/news/{id}', [NewsController::class, 'show'])
@@ -50,4 +50,12 @@ Route::get('/news/categories/{id}', [NewsController::class, 'showCategories'])
     ->where('id', '\d+')
     ->name('categories.show');
 
+Route::get('sql', function (){
+    dump(
 
+        \DB::table('news')
+            ->where('id', '>', 5)
+            ->where('isImage', '=', false)
+            ->get()
+    );
+});

@@ -22,19 +22,19 @@
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
                     <div class="card-body">
-                        <p><strong>Автор</strong>: {{ $news['author'] }}</p>
+                        <p><strong>Автор</strong>: {{ $news->author }}</p>
                         <p>
-                            <a href="{{ route('news.show', ['id' => $news['id']]) }}">
-                                <strong>{{ $news['title'] }}</strong>
+                            <a href="{{ route('news.show', ['id' => $news->id]) }}">
+                                <strong>{{ $news->title }}</strong>
                             </a>
                         </p>
-                        <p class="card-text">{{ $news['description'] }}</p>
+                        <p class="card-text">{{ $news->description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="{{ route('news.show', ['id' => $news['id']]) }}" type="button" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
+                                <a href="{{ route('news.show', ['id' => $news->id]) }}" type="button" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
 
                             </div>
-                            <small class="text-muted">Дата добавления: <br>{{ $news['created_at'] }}</small>
+                            <small class="text-muted">Дата добавления: <br>{{ $news->created_at }}</small>
                         </div>
                     </div>
                 </div>
