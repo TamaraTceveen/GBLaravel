@@ -5,24 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Category;
+use App\QueryBuilders\NewsQueryBuilder;
 
 class NewsController extends Controller
 {
-    public function index()
-    {
-        $news = new News();
-        $news = $news->getNews();
-//        $news = [];
 
+    public function index(NewsQueryBuilder $queryBuilder)
+    {
+        $news = News::select(News::$availableFields)->get();
         return view('news.index', [
             'newsList' => $news
         ]);
     }
 
-    public function show(int $id)
+    public function show(News $news)
     {
-        $news = new News();
-        $news = $news->getNewsById($id);
 
         return view('news/show', [
             'newsList' => $news
@@ -34,7 +31,6 @@ class NewsController extends Controller
         $categories = new Category();
         $categories = $categories->newsCategories();
 
-//        dd($categories);
         return view('news/categories', [
             'categoriesList' => $categories
         ]);
@@ -45,7 +41,7 @@ class NewsController extends Controller
         $categories = new Category();
         $categories = $categories->showCategories($id);
 
-//        dd($categories);
+
         return view('news/showNewsByCategory', [
             'categoriesList' => $categories
         ]);
@@ -58,7 +54,7 @@ class NewsController extends Controller
             'title' => ['required', 'string', 'min:5']
         ]);
 
-//        file_put_contents(public_path('/news/data.json'), json_encode($request->all()));
+//        file_put_contents(public_path('/newsFile/data.json'), json_encode($request->all()));
 
         dd($request->all());
 

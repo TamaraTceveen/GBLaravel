@@ -31,11 +31,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
 
 Route::view('/about', 'news.about')->name('about');
 
-Route::get('/newslist', [NewsController::class, 'index'])
+Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
 
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+')
+Route::get('/news/{news}', [NewsController::class, 'show'])
+    ->where('news', '\d+')
     ->name('news.show');
 
 Route::resource('/newsComment', NewsFormController::class);
@@ -58,4 +58,23 @@ Route::get('sql', function (){
             ->where('isImage', '=', false)
             ->get()
     );
+});
+
+Route::get('/collection', function () {
+    $arr = [
+        1,2,3,4
+    ];
+
+    $arr2 = [
+      'names' => [
+          'Tom', 'Steve'
+      ],
+        'ages' => [
+            3, 6
+        ]
+    ];
+    $collection = collect($arr);
+    $collection2 = collect($arr2);
+
+    dd($collection);
 });

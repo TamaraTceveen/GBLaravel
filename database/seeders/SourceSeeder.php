@@ -25,11 +25,11 @@ class SourceSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $title = $faker->sentence(5);
             $data[] = [
-                'source' => $faker->sentence(7),
-                'title' => $title,
                 'author' => $faker->userName(),
-                'description' => $faker->text(100),
-                'category' => $faker->sentence(3)
+                'phone' => $faker->phoneNumber(),
+                'mail' => $faker->email(),
+                'title' => $title,
+                'description' => $faker->text(100)
             ];
         }
         return $data;

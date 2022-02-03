@@ -24,14 +24,14 @@
                     <div class="card-body">
                         <p><strong>Автор</strong>: {{ $news->author }}</p>
                         <p>
-                            <a href="{{ route('news.show', ['id' => $news->id]) }}">
+                            <a href="{{ route('news.show', ['news' => $news]) }}">
                                 <strong>{{ $news->title }}</strong>
                             </a>
                         </p>
                         <p class="card-text">{{ $news->description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <a href="{{ route('news.show', ['id' => $news->id]) }}" type="button" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
+                                <a href="{{ route('news.show', ['news' => $news->id]) }}" type="button" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
 
                             </div>
                             <small class="text-muted">Дата добавления: <br>{{ $news->created_at }}</small>

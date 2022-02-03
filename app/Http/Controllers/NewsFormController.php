@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Source;
 use Illuminate\Http\Request;
 
 class NewsFormController extends Controller
@@ -43,15 +45,17 @@ class NewsFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Source $source)
     {
         $request->validate([
             'author' => ['required', 'string', 'min:5']
         ]);
 
-        file_put_contents(public_path('/news/data.json'), json_encode($request->all()), FILE_APPEND);
-
-        return response()->json($request->all(), 201);
+        $data = $request->only(['author', 'phone', 'mail', 'description']);
+        $updated = $source->fill($data)->save();
+        
+        return redirect()->route('news.index')
+            ->with('success', 'Категория успешно добавлена');
     }
 
     /**

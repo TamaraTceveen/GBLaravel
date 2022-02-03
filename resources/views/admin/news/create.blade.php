@@ -13,13 +13,17 @@
 
 
 @section('content')
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-        <x-alert type="danger" :message="$error"></x-alert>
-        @endforeach
-    @endif
+    @include('inc.message')
     <form method="post" action="{{ route('admin.news.store') }}">
         @csrf
+        <div class="form-group">
+            <label for="categories">Выбрать категории</label>
+           <select class="form-control" multiple name="categories[]" id="categories">
+               @foreach($categories as $category)
+                   <option value="{{ $category->id }}">{{ $category->title }}</option>
+               @endforeach
+           </select>
+        </div>
         <div class="form-group">
             <label for="title">Наименование</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">

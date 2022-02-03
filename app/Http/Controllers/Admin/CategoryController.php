@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,7 +16,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        $categories = Category::paginate(5);
+
+
+        return view('admin.categories.index', [
+            'categoriesList' => $categories
+        ]);
+
     }
 
     /**
@@ -24,7 +32,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return 'Добавить категорию';
+        $categories = Category::all();
+        return view('admin.categories.create', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -35,7 +46,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:5']
+        ]);
+
+        $data = $request->only(['title', 'description']);
+
+        $created = Category::create($data);
+        if($created) {
+            $created->fill($request->input());
+        }
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Категория успещно добавлена');
+
+//        file_put_contents(public_path('/news/data.json'), json_encode($request->all()), FILE_APPEND);
+
+        return back()->with('error', 'Не удалось добавить категорию')
+            ->withInput();
     }
 
     /**
@@ -52,12 +79,15 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+
+        return view('admin.categories.edit', [
+            'categories' => $category
+        ]);
     }
 
     /**
@@ -67,9 +97,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:5']
+        ]);
+
+        $data = $request->only(['title', 'description']);
+
+        $updated = $category->fill($data)->save();
+
     }
 
     /**

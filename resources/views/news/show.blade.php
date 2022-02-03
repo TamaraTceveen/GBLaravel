@@ -14,7 +14,11 @@
 
 @section('content')
     <div class="container">
-
+    <h3>Категории:
+        @foreach($newsList->categories as $category)
+            {{ $category->title }},
+        @endforeach
+    </h3>
     <p>Author: {{ $newsList->author }} &nbsp; Date: {{ $newsList->created_at }}</p>
     <p class="card-text">{{ $newsList->description }}</p>
 

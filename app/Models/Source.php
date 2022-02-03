@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Category extends Model
+class Source extends Model
 {
     use HasFactory;
 
-    protected $table = "categories";
+    protected $table = "source";
 
-    public static $availableFields = ['id', 'title', 'description', 'created_at'];
+    public static $availableFields = ['id', 'author', 'phone', 'mail', 'description', 'created_at'];
 
     protected $fillable = [
-        'title',
+        'author',
+        'phone',
+        'mail',
         'description'
     ];
 
@@ -23,5 +26,4 @@ class Category extends Model
     {
         return mb_strtoupper($value);
     }
-
 }

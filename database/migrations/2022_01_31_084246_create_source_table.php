@@ -15,12 +15,10 @@ class CreateSourceTable extends Migration
     {
         Schema::create('source', function (Blueprint $table) {
             $table->id();
-            $table->string('source',255);
-            $table->string('title', 255);
-            $table->string('author', 100)->default('Admin');
-            $table->boolean('isImage')->default(false);
+            $table->string('author',255);
+            $table->string('phone', 255);
+            $table->string('mail', 100);
             $table->text('description')->nullable();
-            $table->string('category', 100);
             $table->timestamps();
         });
     }
