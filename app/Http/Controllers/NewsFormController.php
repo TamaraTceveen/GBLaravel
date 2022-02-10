@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Http\Requests\NewsFormRequest;
 use App\Models\Source;
 use Illuminate\Http\Request;
 
@@ -13,15 +13,6 @@ class NewsFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-//    public function index(int $id)
-//    {
-//        $categories = $this->newsCategories($id);
-//
-//        return view('news/showNewsByCategory', [
-//            'categoriesList' => $categories
-//        ]);
-//
-//    }
 
     public function index()
     {
@@ -42,20 +33,22 @@ class NewsFormController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param NewsFormRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request, Source $source)
+    public function store(NewsFormRequest $request): RedirectResponse
     {
-        $request->validate([
-            'author' => ['required', 'string', 'min:5']
-        ]);
+        $data = $request->validated();
+        $created = Source::create($data);
 
-        $data = $request->only(['author', 'phone', 'mail', 'description']);
-        $updated = $source->fill($data)->save();
-        
+        if($created) {
+            $created->fill($request->input());
+        }
         return redirect()->route('news.index')
-            ->with('success', 'Категория успешно добавлена');
+            ->with('success', trans('messages.source.created.success'));
+
+        return back()->with('error', __('messages.source.created.error'))
+            ->withInput();
     }
 
     /**

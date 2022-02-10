@@ -78,3 +78,12 @@ Route::get('/collection', function () {
 
     dd($collection);
 });
+
+Route::get('/session', function () {
+   if(session()->has('test')) {
+       dd(session()->all(), session()->get('test'));
+       session()->forget('test');
+   }
+
+   session(['test' => rand(1,1000)]);
+});

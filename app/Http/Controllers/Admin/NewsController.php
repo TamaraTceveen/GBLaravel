@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\UpdateRequest;
 use App\Models\Category;
 use App\Models\News;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class NewsController extends Controller
 {
@@ -42,16 +46,13 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);
 
-        $data = $request->only(['title', 'author', 'status', 'description']) + [
+        $data = $request->validated() + [
             'slug' => \Str::slug($request->input('title'))
             ];
 
@@ -61,12 +62,9 @@ class NewsController extends Controller
                 $created->categories()->attach($request->input('categories'));
                 }
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успещно добавлена');
+                ->with('success', trans('messages.admin.news.created.success'));
 
-//        file_put_contents(public_path('/news/data.json'), json_encode($request->all()), FILE_APPEND);
-
-//        return response()->json($request->all(), 201);
-        return back()->with('error', 'Не удалось добавить запись')
+        return back()->with('error', __('messages.admin.news.created.error'))
             ->withInput();
     }
 
@@ -108,22 +106,19 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  News $news
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param News $news
+     * @return RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(UpdateRequest $request, News $news): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5']
-        ]);
 
-        $data = $request->only(['title', 'author', 'status', 'description']) + [
+
+        $data = $request->validated() + [
                 'slug' => \Str::slug($request->input('title'))];
 
         $updated = $news->fill($data)->save();
 
-//        dd($request->input());
 
         if($updated){
             \DB::table('categories_has_news')
@@ -138,9 +133,9 @@ class NewsController extends Controller
                     ]);
             }
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успещно обновлена');
+                ->with('success', __('messages.admin.news.updated.success'));
         }
-        return back()->with('error', 'Не удалось обновить запись')
+        return back()->with('error', __('messages.admin.news.updated.error'))
             ->withInput();
     }
 
@@ -152,6 +147,12 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        try{
+            $news->delete();
+            return response()->json('ok');
+        }catch (\Exception $e) {
+            \Log::error('News error destroy', [$e]);
+            return response()->json('error', 400);
+        }
     }
 }
