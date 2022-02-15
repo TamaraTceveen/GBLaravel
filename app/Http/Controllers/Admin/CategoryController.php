@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\categories\CreateRequest;
 use App\Http\Requests\categories\UpdateRequest;
 use App\Models\Category;
-use App\Models\News;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
