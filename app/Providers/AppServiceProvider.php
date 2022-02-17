@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\Parser;
+use App\Contracts\Social;
+use App\QueryBuilders\NewsQueryBuilder;
+use App\Services\ParserService;
+use App\Services\SocialService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(NewsQueryBuilder::class);
+
+//        services layer
+
+        $this->app->bind(Parser::class, ParserService::class);
+
+        $this->app->bind(Social::class, SocialService::class);
     }
 
     /**

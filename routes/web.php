@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsFormController;
-use \App\Http\Controllers\Account\IndexController as AccountController;
+use App\Http\Controllers\Admin\ParserController as ParserController;
+use App\Http\Controllers\SocialController as SocialController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\UserController as AdminUsersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +37,8 @@ Route::group(['middleware' => 'auth'], function (){
     })->name('account.logout');
 
     Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
+        Route::get('/parser', ParserController::class)
+            ->name('parser');
         Route::view('/', 'admin.index')->name('index');
         Route::resource('/categories', AdminCategoryController::class);
         Route::resource('/news', AdminNewsController::class);
@@ -101,5 +106,15 @@ Route::get('/session', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('home');
+
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('auth/{network}/redirect', [SocialController::class, 'redirect'])
+        ->where('network', '\w+')
+        ->name('auth.redirect');
+    Route::get('auth/{network}/callback', [SocialController::class, 'callback'])
+        ->where('network', '\w+')
+        ->name('auth.callback');
+});
 
